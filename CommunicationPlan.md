@@ -12,17 +12,11 @@ All status and event driven meetings and reports may take the form of verbal, wr
 
 These meetings are expected to be conducted in a similar manner, but for the primary purposes listed below. This is not a complete list of possibilities throughout the project.
 
-\>In the event of significant issues affecting the project's timeline or product progress
-
-  stagnating.
-
-\>Unexpected technical difficulties, such as coding or equipment failure.
-
-\>When new requirements are added or are changed.
-
-\>To evaluate, approve or reject change requests.
-
-\>Or for any urgent or critical issues requiring senior leadership attention.
+* In the event of significant issues affecting the project's timeline or product progress stagnating.
+* Unexpected technical difficulties, such as coding or equipment failure.
+* When new requirements are added or are changed.
+* To evaluate, approve or reject change requests.
+* Or for any urgent or critical issues requiring senior leadership attention.
 
 #### **Internal Communications**
 
@@ -38,7 +32,7 @@ Are expected to occur when issues need to be discussed at greater length, regard
 
 Additional meetings can be and should be brought to the PM's and the group's attention as soon as a serious problem arises to ensure that all stakeholders and team members are informed of changes.
 
-#### **Communications Policy**
+### **Communications Policy**
 
 Regular communication channels are designated as follows:
 
@@ -49,8 +43,9 @@ In-person at the regular meetings, Discord, or Canvas via IvyLearn Inbox, group 
 
 _Conflict Resolution Policy:_
 
-Conflict between team members, should it arise, should be brought to the PM's attention as soon as possible, to ensure quick resolution. If the conflict exists with the PM, and the team member does not feel comfortable approaching the PM, another trusted team member should be approached, so that a conversation is started with the PM and the issue is resolved, equitably and as soon as possible. If the team member still does not feel as if the conflict is resolved, it should be brought to a special event driven meeting to be resolved by team vote.
+Conflict between team members, should it arise, should be brought to the PM's attention as soon as possible, to ensure quick resolution. If the conflict exists with the PM, and the team member does not feel comfortable approaching the PM, another trusted team member should be approached, so that a conversation is started with the PM and the issue is resolved, equitably and as soon as possible. If the team member still does not feel as if the conflict is resolved, it should be brought to a special event driven meeting to be resolved by team vote. 
 
+---
 _Digitally Signed:_
 
 Cheryl Borst (She/Her)
