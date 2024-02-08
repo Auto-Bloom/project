@@ -1,20 +1,20 @@
-**Auto-Bloom Communications Plan**
+## **Auto-Bloom Communications Plan**
 
-**External Communications**
+#### **External Communications**
 
-_ **External Project Status Meetings:** _ 
+###### **_External Project Status Meetings:_** 
 
 Regular meetings and reports with the professor will be conducted by the Client Liaison, unless otherwise stated or required by circumstance. The frequency and the content of these meetings has yet to be specified, but it is anticipated that regular check-ins and reports will occur.
 
 All status and event driven meetings and reports may take the form of verbal, written or as comment commits through at least one of the following forms of media: in-person, Zoom, GitHub, IvyLearn Inbox (Canvas), or other form as required.
 
-_ **Event Driven Meetings:** _
+###### **_Event Driven Meetings:_**
 
 These meetings are expected to be conducted in a similar manner, but for the primary purposes listed below. This is not a complete list of possibilities throughout the project.
 
 \>In the event of significant issues affecting the project's timeline or product progress
 
-stagnating.
+  stagnating.
 
 \>Unexpected technical difficulties, such as coding or equipment failure.
 
@@ -24,28 +24,28 @@ stagnating.
 
 \>Or for any urgent or critical issues requiring senior leadership attention.
 
-**Internal Communications**
+#### **Internal Communications**
 
-_ **Regularly Scheduled Meetings:** _
+##### **_Regularly Scheduled Meetings:_**
 
 Weekly Friday meetings will be scheduled for a duration of about one hour following class. (If required, more time will be allotted). Regular meetings will be held online via one of the following media: Discord or Zoom.
 
 The content of these meetings is expected to serve as a forum to discuss project activities, progress, and issues.
 
-_ **Event Driven Meetings:** _
+##### **_Event Driven Meetings:_**
 
 Are expected to occur when issues need to be discussed at greater length, regarding changing existing requirements by addition or reduction, any other issue that needs to be addressed quickly with regards to the project.
 
 Additional meetings can be and should be brought to the PM's and the group's attention as soon as a serious problem arises to ensure that all stakeholders and team members are informed of changes.
 
-**Communications Policy**
+#### **Communications Policy**
 
 Regular communication channels are designated as follows:
 
 In-person at the regular meetings, Discord, or Canvas via IvyLearn Inbox, group announcements, or discussion pages.
 
 
-**All communications are expected to be professional, respectful, and fair-minded, devoid of politics or other discriminatory and inflammatory language.** _
+**_All communications are expected to be professional, respectful, and fair-minded, devoid of politics or other discriminatory and inflammatory language._**
 
 _Conflict Resolution Policy:_
 
