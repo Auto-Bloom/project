@@ -1,13 +1,76 @@
 /*I'm learnin :)*/
+/* added some flair*/
 
-h1 { //italic and bold style
-    text-align: center;
-    font-family: "Georgia serif", georgia, serif;
-    font-weight: bolder;
+/* Base styles for the body to set font and a neutral background */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f2; /* Light neutral color */
+  color: #333; /* Dark grey, will probably change */
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
 }
 
-
-h2 { //regular text
-    text-align: right;
-    font-family: 'Times-New-Roman', 
+/* Styles for the header to make it stand out */
+div.a {
+  background-color: #2a5a40; /* Dark green from the logo */
+  color: #e3eaa7; /* Soft yellow */
+  text-align: center;
+  padding: 1em 0;
 }
+
+/* Style for the main title */
+h1 {
+  color: #ddf3e4; /* Lighter green from the logo for the title text */
+  margin-bottom: 0.5em;
+}
+
+/* Underline styles for artistic effect */
+hr {
+  border: none;
+  height: 2px;
+}
+
+hr:first-of-type {
+  background-color: #E5DD36; /* Yellow */
+}
+
+hr:last-of-type {
+  background-color: #88E536; /* Green color from the logo */
+}
+
+/* Style for links */
+a {
+  color: #1c4e80; /* Dark blue color that contrasts well with other elements */
+  text-decoration: none;
+}
+
+/* Style for buttons or call to action */
+.button {
+  background-color: #E5DD36; /* Yellow */
+  color: #2a5a40; /* Dark green from the logo */
+  padding: 10px 20px;
+  text-align: center;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  font-size: 1em;
+}
+
+/* Paragraph styles */
+p {
+  color: #ddf3e4; /* Light green logo */
+  font-size: 1em;
+  margin-bottom: 1em;
+}
+
+/* Footer styles if needed */
+footer {
+  background-color: #2a5a40; /* Dark green logo */
+  color: #ddf3e4; /* Light green logo */
+  text-align: center;
+  padding: 1em 0;
+}
+
