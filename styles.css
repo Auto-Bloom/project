@@ -4,8 +4,8 @@
 /* Base styles for the body to set font and a neutral background */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f4f2; /* Light neutral color */
-  color: #333; /* Dark grey, will probably change */
+  background-color: #e3eaa7; /* Light yellow */
+  color: #1c4e80; /* Dark blue */
   line-height: 1.6;
   margin: 0;
   padding: 0;
