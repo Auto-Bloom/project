@@ -1,0 +1,13 @@
+/*I'm learnin :)*/
+
+h1 { //italic and bold style
+    text-align: center;
+    font-family: "Georgia serif", georgia, serif;
+    font-weight: bolder;
+}
+
+
+h2 { //regular text
+    text-align: right;
+    font-family: 'Times-New-Roman', 
+}
