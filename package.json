@@ -1,5 +1,5 @@
 {
-  "name": "group_2_final_project",
+  "name": "auto bloom",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/StevenSeagal98/sdev_255_final_group_two.git"
+    "url": "git+https://github.com/Auto-Bloom/project.git"
   },
   "author": "Group Two",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/StevenSeagal98/sdev_255_final_group_two/issues"
+    "url": "https://github.com/Auto-Bloom/project.git/issues"
   },
-  "homepage": "https://github.com/StevenSeagal98/sdev_255_final_group_two#readme",
+  "homepage": "https://github.com/Auto-Bloom/project.git#readme",
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.6",
     "dotenv": "^16.4.2",
