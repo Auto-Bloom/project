@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Bloom Index</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="/login.html">Login</a></li>
+            <li><a href="/bloom-index.html">All Blooms</a></li>
+        </ul>
+    </nav>    
+    <h2>All Blooms</h2>
+    
+    <a href="add-data.html" class="btn">Add New Blooms</a>
+
+    <ul id="bloomList">
+        {{#each blooms}}
+        <li>
+            <strong>Title:</strong> {{this.title}}, 
+            <strong>Regions:</strong> {{this.regions.join ', '}}, 
+            <strong>Description:</strong> {{this.description}}, 
+            <strong>Use/Benefit:</strong> {{this.useBenefit}}, 
+            <strong>Growing Conditions:</strong> {{this.growingConditions}}
+            <br><img src="{{this.image}}" alt="{{this.title}}" style="width:100px;"><br>
+        </li>
+        {{/each}}
+    </ul>
+</body>
+</html>

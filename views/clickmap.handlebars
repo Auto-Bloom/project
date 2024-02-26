@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClickMap</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<h3>Clickable Map of the United States</h3>
+<div id="map"></div>
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDz2WIXFzsHwNw1L8YN7z0BXG8NcJ4iuEI&loading=async&callback=initMap">
+</script>
+
+<script>
+function initMap() {
+    var mapOptions = {
+        zoom: 4,
+        center: {lat: 37.0902, lng: -95.7129}
+    };
+
+    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+    // Define polygons for each region
+    var regions = {
+        'Northeast': [
+            {lat: 41.0, lng: -74.0},
+            {lat: 45.0, lng: -74.0},
+            {lat: 45.0, lng: -69.0},
+            {lat: 41.0, lng: -69.0}
+        ],
+        'Midwest': [
+            {lat: 38.0, lng: -92.0},
+            {lat: 42.0, lng: -92.0},
+            {lat: 42.0, lng: -86.0},
+            {lat: 38.0, lng: -86.0}
+        ],
+        'South': [
+            {lat: 29.0, lng: -90.0},
+            {lat: 33.0, lng: -90.0},
+            {lat: 33.0, lng: -85.0},
+            {lat: 29.0, lng: -85.0}
+        ],
+        'West': [
+            {lat: 36.0, lng: -115.0},
+            {lat: 40.0, lng: -115.0},
+            {lat: 40.0, lng: -109.0},
+            {lat: 36.0, lng: -109.0}
+        ]
+    };
+
+    // Create a polygon for each region
+    Object.keys(regions).forEach(function(key) {
+        var region = new google.maps.Polygon({
+            paths: regions[key],
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+        });
+        region.setMap(map);
+
+        // Add a listener for the click event
+        google.maps.event.addListener(region, 'click', function(event) {
+            // Redirect to the region-specific webpage
+            window.location.href = `/region/${key}`;
+        });
+    });
+}
+
+</script>
+
+</body>
+</html>

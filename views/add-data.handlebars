@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Bloom</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="/login.html">Login</a></li>
+            <li><a href="/bloom-index.html">All Blooms</a></li>
+        </ul>
+    </nav>  
+    
+    <h1>Add a New Bloom</h1>
+    <form action="/add-bloom" method="POST">
+        <label for="title">Bloom Title:</label><br>
+        <input type="text" id="title" name="title" required><br>
+        <label for="image">Image URL:</label><br>
+        <input type="text" id="image" name="image" required><br>
+        <label for="regions">Regions:</label><br>
+        <input type="text" id="regions" name="regions" required><br>
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" required></textarea><br>
+        <label for="useBenefit">Use/Benefit:</label><br>
+        <input type="text" id="useBenefit" name="useBenefit" required><br>
+        <label for="growingConditions">Growing Conditions:</label><br>
+        <input type="text" id="growingConditions" name="growingConditions" required><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
