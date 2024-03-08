@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+    --light: #f2f2f2;
+    --dark: #212121;
+    --ivy-green: #006648;
+    --ivy-green-light: #8dc63f;
+    --nature-green: #4CAF50; /* Added */
+    --wildflower-text: #8FBC8F; /* Added */
+    --nature-border: #2E8B57; /* Added */
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Raleway', sans-serif; /* Ensured font family is applied globally */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: rgba(104, 160, 123, 0.71);
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    margin-top: auto;
+    background-color: #2a5a40; /* Dark green logo */
+    color: #ddf3e4; /* Light green logo */
+    text-align: center;
+    padding: 1em 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+}
+
+/* Navigation */
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav li {
+    display: inline;
+    margin-right: 10px;
+}
+
+/* Custom Styles */
+.nature-green-bg {
+    background-color: var(--nature-green);
+}
+
+.wildflower-text {
+    color: var(--wildflower-text);
+}
+
+.nature-border {
+    border-color: var(--nature-border);
+}
+
+.btn-nature {
+    background-color: #3CB371;
+    color: white;
+}
+
+.btn-nature:hover {
+    background-color: #2E8B57;
+    color: #fff;
+}
+
+#bloomList li {
+    /* Add custom styles as needed */
+}
+
+/* Adjusted Navbar Customization */
+.navbar-custom {
+    background-color: var(--nature-green); /* Updated to use variable */
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text,
+.navbar-custom .nav-link {
+    color: #ffffff; /* white */
+}
+
+/* Home Page */
+.home-hero {
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('./assets/logo.png');
+    background-size: cover;
+    background-position: center;
+    color: var(--light);
+    min-height: 100vh;
+}

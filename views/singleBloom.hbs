@@ -1,0 +1,21 @@
+<main class="container">
+    <section class="card shadow p-2 my-2 col-12 blooms-card">
+        <img src="{{bloom.image}}" class="card-img-top" alt="{{bloom.plantName}}">
+        <div class="card-body">
+            <h3 class="card-title">{{bloom.plantName}}</h3>
+            <p class="card-text">{{bloom.description}}</p>
+            <p>Regions: 
+                {{#each bloom.region}}
+                    <span>{{this}}</span>{{#unless @last}}, {{/unless}}
+                {{/each}}
+            </p>
+            <p>Benefits: 
+                {{#each bloom.benefits}}
+                    <span>{{this}}</span>{{#unless @last}}, {{/unless}}
+                {{/each}}
+            </p>
+            <p>Growing Conditions: {{bloom.growingConditions}}</p>
+            <a href="/blooms" class="btn btn-secondary">All Blooms</a>
+        </div>
+    </section>
+</main>

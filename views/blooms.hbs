@@ -1,0 +1,44 @@
+<main class="container py-4">
+  <h1 class="my-2">Blooms</h1>
+  {{#each blooms}}
+    <div class="my-2 p-2 border bg-light rounded shadow">
+      <img src="{{this.image}}" alt="{{this.plantName}}" style="width:100%; max-width: 300px; height: auto;">
+      <h3>{{this.plantName}}</h3>
+      <p>{{this.description}}</p>
+      
+      <!-- Displaying Regions -->
+      <p><strong>Regions:</strong> 
+        {{#each region}}
+          {{this}}{{#unless @last}}, {{/unless}}
+        {{/each}}
+      </p>
+      
+      <!-- Displaying Benefits -->
+      <p><strong>Benefits:</strong> 
+        {{#each benefits}}
+          {{this}}{{#unless @last}}, {{/unless}}
+        {{/each}}
+      </p>
+      
+      <p><strong>Growing Conditions:</strong> {{this.growingConditions}}</p>
+      <a class="btn btn-dark" href="/blooms/{{this._id}}">Learn More</a>
+      <a class="btn btn-warning update" href="/blooms/{{this._id}}?updating=true">Update Bloom</a>
+      <a class="btn btn-danger delete" href="#" data-doc="{{this._id}}">Delete</a>
+    </div>
+  {{/each}}
+  <script>
+    document.querySelectorAll('.delete').forEach(trashcan => {
+      trashcan.addEventListener('click', (e) => {
+        e.preventDefault();
+        const endpoint = `/blooms/${trashcan.dataset.doc}`;
+
+        fetch(endpoint, {
+          method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => window.location.href = data.redirect)
+        .catch(err => console.log(err));
+      });
+    });
+  </script>
+</main>
