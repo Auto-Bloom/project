@@ -1,0 +1,106 @@
+<main class="container-fluid p-0">
+    <section class="home-hero py-4">
+        <div class="container">
+            <section class="col-md-12 col-12 text-md-left text-center">
+                <h1>Welcome to Auto Bloom</h1>
+                <p>some fun text here</p>
+                <button class="btn btn-dark"> <a class="nav-link" href="/login">Login</a></button>
+                
+                <button class="btn btn-dark"><a class="nav-link" href="/register">Sign Up</a></button>
+            </section>
+            <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<center><h3>Please Select Your Region</h3></center>
+<div id="map"></div>
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDz2WIXFzsHwNw1L8YN7z0BXG8NcJ4iuEI&loading=async&callback=initMap">
+</script>
+
+<script>
+function initMap() {
+    var mapOptions = {
+        zoom: 4,
+        center: {lat: 37.0902, lng: -95.7129}
+    };
+
+    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+
+// Define polygons for each region
+var regions = {
+    'Northeast': [
+        {lat: 39.0, lng: -79.0}, // West Virginia's Eastern border
+        {lat: 39.0, lng: -74.0}, // New Jersey's Eastern border
+        {lat: 42.0, lng: -70.0}, // Eastern Massachusetts
+        {lat: 45.0, lng: -71.0}, // Northern Vermont/New Hampshire
+        {lat: 45.0, lng: -75.0}, // Upstate New York
+        {lat: 42.0, lng: -79.0}, // Western New York
+    ],
+    'Midwest': [
+        {lat: 36.5, lng: -89.0}, // Southern tip of Illinois/Missouri
+        {lat: 36.5, lng: -101.5}, // Western Oklahoma
+        {lat: 41.0, lng: -104.0}, // Eastern Wyoming
+        {lat: 49.0, lng: -95.0}, // Northern Minnesota
+        {lat: 45.0, lng: -82.0}, // Northern Michigan
+        {lat: 39.0, lng: -82.0}, // Southern Ohio
+    ],
+    'South': [
+        {lat: 29.0, lng: -97.0}, // Central Texas
+        {lat: 30.0, lng: -85.0}, // Florida Panhandle
+        {lat: 34.0, lng: -75.5}, // Eastern North Carolina
+        {lat: 36.5, lng: -75.5}, // Virginia Coast
+        {lat: 38.0, lng: -79.0}, // West Virginia/Virginia border
+        {lat: 36.5, lng: -89.0}, // Meeting point with Midwest at Southern tip of Illinois
+        {lat: 32.0, lng: -94.0}, // Eastern Texas
+        {lat: 29.0, lng: -93.0}, // Western Louisiana
+    ],
+    'West': [
+        {lat: 49.0, lng: -125.0}, // Northern Washington
+        {lat: 42.0, lng: -124.0}, // Oregon Coast
+        {lat: 32.5, lng: -117.0}, // Southern California
+        {lat: 32.0, lng: -114.0}, // California/Arizona border
+        {lat: 31.0, lng: -109.0}, // Arizona/New Mexico border
+        {lat: 37.0, lng: -109.0}, // Four Corners
+        {lat: 41.0, lng: -109.0}, // Wyoming/Utah/Colorado border
+        {lat: 45.0, lng: -111.0}, // Montana/Wyoming
+        {lat: 49.0, lng: -116.0}, // Northern Idaho
+    ],
+};
+
+
+    // Create a polygon for each region
+    Object.keys(regions).forEach(function(key) {
+        var region = new google.maps.Polygon({
+            paths: regions[key],
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+        });
+        region.setMap(map);
+
+        // Add a listener for the click event
+        google.maps.event.addListener(region, 'click', function(event) {
+            // Redirect to the region-specific webpage
+            window.location.href = `/region/${key}`;
+        });
+    });
+google.maps.event.addListener(region, 'click', function(event) {
+    // redirect
+    window.location.href = `/region/${key}`;
+});
+
+}
+
+</script>
+        </div>
+    </section>
+</main>

@@ -1,0 +1,13 @@
+<main class="container">
+    <h1>Blooms in the {{regionName}} Region</h1>
+    {{#each blooms}}
+        <div class="bloom">
+            <h2>{{this.plantName}}</h2>
+            <img src="{{this.image}}" alt="{{this.plantName}}" style="width:100px;height:auto;">
+            <p>{{this.description}}</p>
+            <!-- Additional details here -->
+        </div>
+    {{else}}
+        <p>No blooms found for this region.</p>
+    {{/each}}
+</main>

@@ -1,0 +1,78 @@
+<div class="container py-4">
+    <section class="header mx-auto text-center">
+        <h1>Update Bloom: {{ bloom.plantName }}</h1>
+    </section>
+    <section class="form-cont">
+        <form id="update-form">
+            <input hidden id="bloom-id" value="{{ bloom._id }}">
+            <div class="form-group my-2">
+                <label for="image">Image URL</label>
+                <input type="text" name="image" id="image" class="form-control" placeholder="Enter Image URL" value="{{ bloom.image }}">
+            </div>
+            <div class="form-group my-2">
+                <label for="plantName">Plant Name</label>
+                <input type="text" name="plantName" id="plantName" class="form-control" placeholder="Enter Plant Name" value="{{ bloom.plantName }}">
+            </div>
+            <div class="form-group my-2">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" class="form-control" placeholder="Enter Description">{{ bloom.description }}</textarea>
+            </div>
+            <!-- dynamic rendering for region and benefits selection -->
+            <div class="form-group my-2">
+                <label for="region">Region</label>
+                <!-- need to implement multi-select UI -->
+                <select multiple name="region" id="region" class="form-control">
+                    <option value="Northeast">Northeast</option>
+                    <option value="Midwest">Midwest</option>
+                    <option value="South">South</option>
+                    <option value="West">West</option>
+                </select>
+            </div>
+            <div class="form-group my-2">
+                <label for="benefits">Benefits</label>
+                <!-- need to implement multi-select UI -->
+                <select multiple name="benefits" id="benefits" class="form-control">
+                    <option value="attracts pollinators">Attracts Pollinators</option>
+                    <option value="deer resistant">Deer Resistant</option>
+                </select>
+            </div>
+            <div class="form-group my-2">
+                <label for="growingConditions">Growing Conditions</label>
+                <select id="growingConditions" class="form-control">
+                    <option value="full sun">Full Sun</option>
+                    <option value="partial sun">Partial Sun</option>
+                    <option value="full shade">Full Shade</option>
+                </select>
+            </div>
+            <input type="submit" value="Submit" class="btn btn-dark">
+        </form>
+    </section>
+</div>
+
+<script>
+    document.getElementById('update-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        console.log('Submitting form');
+        let success = false;
+        try {
+            const formData = new URLSearchParams();
+            formData.append('id', document.getElementById('bloom-id').value);
+            formData.append('image', document.getElementById('image').value);
+            formData.append('plantName', document.getElementById('plantName').value);
+            formData.append('description', document.getElementById('description').value);
+            // additional logic is needed to handle multiple selections
+            formData.append('region', document.getElementById('region').value);
+            formData.append('benefits', document.getElementById('benefits').value);
+            formData.append('growingConditions', document.getElementById('growingConditions').value);
+
+            const { status } = await fetch('/blooms', { 
+                method: 'PUT', 
+                body: formData
+            });
+            success = status === 200;
+        } catch(err) {
+            console.error(`ERROR SUBMITTING UPDATE FORM: ${err}`);
+        }
+        return success;
+    });
+</script>
