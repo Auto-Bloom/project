@@ -1,14 +1,8 @@
-<main class="container-fluid p-0">
-    <section class="home-hero py-4">
-        <div class="container">
-            <section class="col-md-12 col-12 text-md-left text-center">
-                <h1>Welcome to Auto Bloom</h1>
-                <p>some fun text here</p>
-                <button class="btn btn-dark"> <a class="nav-link" href="/login">Login</a></button>
-                
-                <button class="btn btn-dark"><a class="nav-link" href="/register">Sign Up</a></button>
-            </section>
-            <style>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auto Bloom</title>
+    <style>
         #map {
             height: 400px;
             width: 100%;
@@ -16,22 +10,30 @@
     </style>
 </head>
 <body>
-
-<center><h3>Please Select Your Region</h3></center>
-<div id="map"></div>
-
-
+<main class="container-fluid p-0">
+    <section class="home-hero py-4">
+        <div class="container">
+            <section class="col-md-12 col-12 text-md-left text-center">
+                <h1>Welcome to Auto Bloom</h1>
+                <p>some fun text here</p>
+                <button class="btn btn-dark"> <a class="nav-link" href="/login">Login</a></button>
+                <button class="btn btn-dark"><a class="nav-link" href="/register">Sign Up</a></button>
+            </section>
+            <center><h3>Please Select Your Region</h3></center>
+            <div id="map"></div>
+        </div>
+    </section>
+</main>
 <script>
 function initMap() {
+    // Map options
     var mapOptions = {
         zoom: 4,
         center: {lat: 37.0902, lng: -95.7129}
     };
-
+    // New map
     var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-
-// Define polygons for each region
+    // Define polygons for each region
 var regions = {
     'Northeast': [
         {lat: 39.0, lng: -79.0}, // West Virginia's Eastern border
@@ -95,13 +97,13 @@ google.maps.event.addListener(region, 'click', function(event) {
     // redirect
     window.location.href = `/region/${key}`;
 });
-
 }
 
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Client-side JavaScript initialized');
+});
 </script>
-<script async=
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDz2WIXFzsHwNw1L8YN7z0BXG8NcJ4iuEI&loading=async&callback=initMap">
-</script>
-        </div>
-    </section>
-</main>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDz2WIXFzsHwNw1L8YN7z0BXG8NcJ4iuEI&callback=initMap"></script>
+</body>
+</html>
