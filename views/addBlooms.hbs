@@ -1,64 +1,60 @@
-<section class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <form action="/blooms" method="POST">
-                <h1>Add Bloom</h1>
-                <div class="form-group">
-                    <label for="plantName">Plant Name:</label>
-                    <input type="text" id="plantName" name="plantName" class="form-control" required>
+<section class="container-fluid">
+    <div class="col-6 mx-auto d-flex align-items-center justify-content-center">
+        <form action="/blooms" method="POST">
+            <h1>Add Bloom</h1>
+            <div class="form-group">
+                <label for="plantName">Plant Name:</label>
+                <input type="text" id="plantName" name="plantName" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" class="form-control" required></textarea>
+            </div>
+            <fieldset class="mb-3">
+                <legend>Regions:</legend>
+                <div class="form-check">
+                    <input type="checkbox" id="northeast" name="region[]" value="Northeast" class="form-check-input">
+                    <label for="northeast" class="form-check-label">Northeast</label>
                 </div>
-                <div class="form-group">
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" class="form-control" required></textarea>
+                <div class="form-check">
+                    <input type="checkbox" id="midwest" name="region[]" value="Midwest" class="form-check-input">
+                    <label for="midwest" class="form-check-label">Midwest</label>
                 </div>
-                
-                <!-- Region Selection -->
-                <fieldset class="mb-3">
-                    <legend>Regions:</legend>
-                    <div class="form-check">
-                        <input type="checkbox" id="northeast" name="region[]" value="Northeast" class="form-check-input">
-                        <label for="northeast" class="form-check-label">Northeast</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" id="midwest" name="region[]" value="Midwest" class="form-check-input">
-                        <label for="midwest" class="form-check-label">Midwest</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" id="south" name="region[]" value="South" class="form-check-input">
-                        <label for="south" class="form-check-label">South</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" id="west" name="region[]" value="West" class="form-check-input">
-                        <label for="west" class="form-check-label">West</label>
-                    </div>
-                </fieldset>
-<fieldset class="mb-3">
-                    <legend>Benefits:</legend>
-                    <div class="form-check">
-                        <input type="checkbox" id="attractsPollinators" name="benefits" value="attracts pollinators" class="form-check-input">
-                        <label for="attractsPollinators" class="form-check-label">Attracts Pollinators</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" id="deerResistant" name="benefits" value="deer resistant" class="form-check-input">
-                        <label for="deerResistant" class="form-check-label">Deer Resistant</label>
-                    </div>
-                </fieldset>
-                <div class="form-group">
-                    <label for="growingConditions">Growing Conditions:</label>
-                    <select id="growingConditions" name="growingConditions" class="form-control" required>
-                        <option value="full sun">Full Sun</option>
-                        <option value="partial sun">Partial Sun</option>
-                        <option value="full shade">Full Shade</option>
-                    </select>
+                <div class="form-check">
+                    <input type="checkbox" id="south" name="region[]" value="South" class="form-check-input">
+                    <label for="south" class="form-check-label">South</label>
                 </div>
-                <div class="form-group">
-                    <label for="image">Image URL:</label>
-                    <input type="text" id="image" name="image" class="form-control" required>
+                <div class="form-check">
+                    <input type="checkbox" id="west" name="region[]" value="West" class="form-check-input">
+                    <label for="west" class="form-check-label">West</label>
                 </div>
-                <div class="form-group mt-3">
-                    <input type="submit" value="Add Bloom" class="btn btn-primary">
+            </fieldset>
+            <fieldset class="mb-3">
+                <legend>Benefits:</legend>
+                <div class="form-check">
+                    <input type="checkbox" id="attractsPollinators" name="benefits[]" value="attracts pollinators" class="form-check-input">
+                    <label for="attractsPollinators" class="form-check-label">Attracts Pollinators</label>
                 </div>
-            </form>
-        </div>
+                <div class="form-check">
+                    <input type="checkbox" id="deerResistant" name="benefits[]" value="deer resistant" class="form-check-input">
+                    <label for="deerResistant" class="form-check-label">Deer Resistant</label>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <label for="growingConditions">Growing Conditions:</label>
+                <select id="growingConditions" name="growingConditions" class="form-control" required>
+                    <option value="full sun">Full Sun</option>
+                    <option value="partial sun">Partial Sun</option>
+                    <option value="full shade">Full Shade</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="image">Image URL:</label>
+                <input type="text" id="image" name="image" class="form-control" required>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Add Bloom" class="btn btn-dark">
+            </div>
+        </form>
     </div>
 </section>
