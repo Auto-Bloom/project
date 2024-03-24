@@ -1,14 +1,23 @@
 <section class="container-fluid">
-  <div class="col-6 mx-auto d-flex align-items-center justify-content-center">
+  <div class="container mx-auto d-flex align-items-center justify-content-center flex-wrap">
+    {{#if errMessage}}
+    <section class="rounded col-12 border bg-warning my-2 p-2">
+      <p class="text-center lead">{{ errMessage }}</p>
+    </section>
+    {{/if}}
     <form action="/register" method="POST">
       <h1>Register</h1>
       <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required class="form-control">
+      </div>
+      <div class="form-group">
         <label for="name">First Name:</label>
-        <input type="text" id="name" name="name" required class="form-control">
+        <input type="text" id="firstName" name="firstName" required class="form-control">
       </div>
       <div class="form-group">
         <label for="name">Last Name:</label>
-        <input type="text" id="name" name="name" required class="form-control">
+        <input type="text" id="lastName" name="lastName" required class="form-control">
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
@@ -20,10 +29,17 @@
       </div>
       <div class="form-group">
         <label for="confirm_password">Confirm Password:</label>
-        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Password" oninput="checkPasswordMatch()">
+        <input type="password" class="form-control" id="confirm_password" placeholder="Password" oninput="checkPasswordMatch()">
       </div>
       <div class="form-group">
-        <input type="submit" value="Register" class="btn btn-dark">
+<select name="role" id="role" class="form-select">
+  <option value="user">User</option>
+  <option value="admin">Admin</option>
+</select>
+
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-dark">Register</button>
       </div>
     </form>
   </div>
@@ -31,24 +47,18 @@
 <div id="message"></div>
 <script>
   function checkPasswordMatch() {
-    // Get the password inputs and the message element
     var password = document.getElementById("password");
     var confirm_password = document.getElementById("confirm_password");
     var message = document.getElementById("message");
-
-    // Check if the passwords match
-    if (password.value == confirm_password.value) {
-      // If they match, set a green color and a success message
+    if(password.value == confirm_password.value) {
       confirm_password.style.backgroundColor = "#66cc66";
       message.style.color = "#66cc66";
       message.innerHTML = "Passwords match!";
     } else {
-      // If they don't match, set a red color and an error message
       confirm_password.style.backgroundColor = "#ff6666" ;
       message.style.color = "#f2f2f2";
       message.innerHTML = "Passwords don't match!";
     }
   }
 </script>
-
 

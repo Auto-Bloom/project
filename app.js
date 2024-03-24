@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session');
 const handlebars = require('express-handlebars')
 const path = require('path')
 const { Bloom } = require('./models/blooms');
@@ -7,7 +8,9 @@ require('dotenv').config()
 const app = express()
 
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 
 //Handlebars - html templating setup
 app.set('view engine', 'hbs')
@@ -26,6 +29,17 @@ hbs.handlebars.registerPartial('blooms', '{{{bloom}}}')
 
 //DB Connection
 require('./db/db')
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+      maxAge: 1000 * 60 * 60 * 24 // 24 hours
+  }
+}));
+
+app.use(express.json())
 
 //Routes
 app.use('/', require('./routes'))
