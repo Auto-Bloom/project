@@ -83,5 +83,5 @@ app.get('/region/:regionName', async (req, res) => {
 
 
 //Start Server
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 555
 app.listen(port, () => console.log(`Server is running on port ${port}`))
