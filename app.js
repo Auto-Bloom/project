@@ -43,7 +43,8 @@ app.use(express.json())
 
 //Routes
 app.use('/', require('./routes'))
-
+const dashboardRoutes = require('./routes/dashboard');
+app.use('/dashboard', dashboardRoutes);
 // For creating a new bloom
 app.get('/addBlooms', (req, res) => {
   res.render('addBlooms');
