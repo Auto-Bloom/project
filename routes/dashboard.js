@@ -1,5 +1,10 @@
-const dashboardRouter = require('express').Router()
+const express = require('express');
+const router = express.Router();
+const dashboardController = require('../controllers/dashboard'); // Import the updated controller
 
-dashboardRouter.get('/', (req, res) => res.render('dashboard'))
+// Route for the main dashboard view
+router.get('/', dashboardController.get);
 
-module.exports = dashboardRouter
+
+
+module.exports = router;

@@ -6,11 +6,12 @@
         <p>Email: {{ user.email }} </p>
         <p>Name: {{ user.firstName }} {{ user.lastName }}</p>
         <p>Role: {{ user.role }}</p>
-        <p>Blooms:</p>
         <a class="btn btn-primary my-2" href="/blooms/add">Add New Bloom</a>
-        {{#each user.blooms}}
+        
+        {{#each blooms}}
             <div class="my-2 p-2 border bg-light rounded shadow">
-                <p class="lead">{{this.name}}</p>
+                <img src="{{this.image}}" alt="{{this.plantName}}" style="width:100%; max-width: 300px; height: auto;">
+                <h3>{{this.plantName}}</h3>
                 <p>{{this.description}}</p>
                 <a class="btn btn-warning" href="/blooms/update/{{this._id}}">Update</a>
                 <button class="btn btn-danger delete-bloom" data-doc="{{this._id}}">Delete</button>
