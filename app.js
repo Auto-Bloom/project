@@ -5,6 +5,7 @@ const path = require('path')
 const { Bloom } = require('./models/blooms');
 const { User } = require('./models/users.js');
 
+
 require('dotenv').config()
 
 const app = express()
@@ -51,14 +52,13 @@ app.use('/contact', contactRoutes);
 
 // For creating a new bloom
 app.get('/addBlooms', (req, res) => {
-  res.render('addBlooms');
+  // admin access
+  if (req.session.user && req.session.user.role === 'admin') {
+    res.render('addBlooms');
+  } else {
+    res.redirect('/login');
+  }
 });
-app.get('/logout', (req, res) => {
-  req.session.destroy(() => {
-    res.redirect('/'); // Redirect
-  });
-});
-
 app.post('/blooms', (req, res) => {
   // Ensure that 'region' and 'benefits' are always arrays
   req.body.region = Array.isArray(req.body.region) ? req.body.region : req.body.region ? [req.body.region] : [];
@@ -89,14 +89,13 @@ app.delete('/blooms/:id', (req, res) => {
     });
 });
 
-// Route to display blooms by region, incorporating the .lean() method for efficiency
+// Route to display blooms by region
 app.get('/region/:regionName', async (req, res) => {
   const regionName = req.params.regionName;
   
   try {
       // Use the .lean() method to get plain JavaScript objects
       const blooms = await Bloom.find({ region: { $in: [regionName] } }).lean();
-      // Render the 'bloomsByRegion' view, passing it the blooms and the regionName
       res.render('bloomsByRegion', { blooms, regionName });
   } catch (err) {
       console.error(`Error fetching blooms for region ${regionName}: ${err}`);

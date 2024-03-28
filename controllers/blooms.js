@@ -1,4 +1,5 @@
 const { getBlooms, createBloom, updateBloom, deleteBloom } = require('../models/blooms')
+const { Bloom } = require('../models/blooms');
 
 const bloomsController = {
     get: async (req, res) => {
@@ -32,6 +33,18 @@ const bloomsController = {
             console.error(`ERROR UPDATING BLOOM IN CONTROLLER: ${err}`)
         }
         return success ? res.status(200).send('Bloom updated') : res.status(500).send('Error updating bloom');
+    },
+    updateForm: async (req, res) => {
+        try {
+            const bloom = await Bloom.findById(req.params.bloomId).lean();
+            if (!bloom) {
+                return res.status(404).send('Bloom not found');
+            }
+            res.render('updateBlooms', { bloom });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Server error');
+        }
     },
     del: async (req, res) => {
         let success = false;

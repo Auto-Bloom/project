@@ -1,13 +1,22 @@
-<main class="container">
+<main class="container py-4">
     <h1>Blooms in the {{regionName}} Region</h1>
     {{#each blooms}}
-        <div class="bloom">
-            <h2>{{this.plantName}}</h2>
-            <img src="{{this.image}}" alt="{{this.plantName}}" style="width:100px;height:auto;">
+        <div class="my-2 p-2 border bg-light rounded shadow">
+            <img src="{{this.image}}" alt="{{this.plantName}}" style="width:100%; max-width: 300px; height: auto;">
+            <h3>{{this.plantName}}</h3>
             <p>{{this.description}}</p>
-            <!-- Additional details here -->
+            <button class="btn btn-success" onclick="addToWishList('{{this._id}}')">Add to Wish List</button>
+            <a class="btn btn-dark" href="/blooms/{{this._id}}">Learn More</a>
         </div>
     {{else}}
         <p>No blooms found for this region.</p>
     {{/each}}
+    <script>
+        function addToWishList(bloomId) {
+            fetch(`/dashboard/addToWishList/${bloomId}`, { method: 'PUT'})
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
 </main>
