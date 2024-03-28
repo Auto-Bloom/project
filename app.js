@@ -3,6 +3,8 @@ const session = require('express-session');
 const handlebars = require('express-handlebars')
 const path = require('path')
 const { Bloom } = require('./models/blooms');
+const { User } = require('./models/users.js');
+
 require('dotenv').config()
 
 const app = express()
@@ -101,6 +103,28 @@ app.get('/region/:regionName', async (req, res) => {
       res.status(500).send('Error fetching blooms for the specified region');
   }
 });
+// wishlist
+app.put('/dashboard/addToWishList/:bloomId', async (req, res) => {
+  if (req.session.user && req.session.user.role === 'user') {
+    try {
+      //find a user by ID
+      const user = await User.findById(req.session.user._id);
+      if (!user.wishList.includes(req.params.bloomId)) {
+        user.wishList.push(req.params.bloomId);
+        await user.save();
+        res.send({ message: 'Bloom added to your wish list!' });
+      } else {
+        res.send({ message: 'This bloom is already in your wish list.' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'An error occurred.' });
+    }
+  } else {
+    res.status(403).send({ message: 'Unauthorized' });
+  }
+});
+
 
 //Start Server
 const port = process.env.PORT || 555

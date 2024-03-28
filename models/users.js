@@ -32,7 +32,9 @@ const userSchema = new mongoose.Schema({
     blooms: { 
         type: Array,
         required: false
-    }
+    },
+    wishList: [{ 
+        type: mongoose.Schema.Types.ObjectId, ref : 'Bloom'}]
 })
 
 const User = mongoose.model('User', userSchema)
@@ -130,4 +132,4 @@ const deleteAllUsers = async () => {
     }
 }
 
-module.exports = { getUser, createUser, updateUserBlooms, deleteAllUsers };
+module.exports = { User, getUser, createUser, updateUserBlooms, deleteAllUsers };
