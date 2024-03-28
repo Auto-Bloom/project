@@ -11,7 +11,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
 //Handlebars - html templating setup
 app.set('view engine', 'hbs')
 app.engine('hbs', handlebars.engine({
@@ -45,9 +44,17 @@ app.use(express.json())
 app.use('/', require('./routes'))
 const dashboardRoutes = require('./routes/dashboard');
 app.use('/dashboard', dashboardRoutes);
+const contactRoutes = require('./routes/contact');
+app.use('/contact', contactRoutes);
+
 // For creating a new bloom
 app.get('/addBlooms', (req, res) => {
   res.render('addBlooms');
+});
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/'); // Redirect
+  });
 });
 
 app.post('/blooms', (req, res) => {
@@ -94,8 +101,6 @@ app.get('/region/:regionName', async (req, res) => {
       res.status(500).send('Error fetching blooms for the specified region');
   }
 });
-
-
 
 //Start Server
 const port = process.env.PORT || 555
