@@ -6,6 +6,7 @@ bloomsRouter.get('/addBlooms', (req, res) => {
 
   res.render('addBlooms');
 });
+bloomsRouter.get('/', bloomsController.getAll);
 bloomsRouter.get('/update/:bloomId', bloomsController.updateForm);
 bloomsRouter.get('/:bloomId', bloomsController.get);
 bloomsRouter.post('/', bloomsController.post);

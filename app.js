@@ -59,6 +59,12 @@ app.get('/addBlooms', (req, res) => {
     res.redirect('/login');
   }
 });
+//logout
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/'); // Redirect
+  });
+});
 app.post('/blooms', (req, res) => {
   // Ensure that 'region' and 'benefits' are always arrays
   req.body.region = Array.isArray(req.body.region) ? req.body.region : req.body.region ? [req.body.region] : [];
