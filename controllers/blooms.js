@@ -2,6 +2,15 @@ const { getBlooms, createBloom, updateBloom, deleteBloom } = require('../models/
 const { Bloom } = require('../models/blooms');
 
 const bloomsController = {
+    getAll: async (req, res) => {
+        try {
+            const data = await getBlooms(); 
+            res.render('blooms', { blooms: data }); 
+        } catch(err) {
+            console.error(`ERROR GETTING ALL BLOOMS: ${err}`);
+            res.status(500).send('Error fetching blooms');
+        }
+    },
     get: async (req, res) => {
         let data = []
         const bloomId = req.params?.bloomId
