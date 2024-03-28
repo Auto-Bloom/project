@@ -6,6 +6,11 @@
         <p>Email: {{ user.email }} </p>
         <p>Name: {{ user.firstName }} {{ user.lastName }}</p>
         <p>Role: {{ user.role }}</p>
+                            <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a href="/logout" class="nav-link">Logout</a>
+                        </li>
+                    </ul>
         <a class="btn btn-primary my-2" href="/blooms/add">Add New Bloom</a>
         
         {{#each blooms}}
@@ -30,25 +35,22 @@
                     <p>Role: {{ user.role }}</p>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="/blooms/wishlist">My Wishlist</a>
-                        </li>
-                        <li class="nav-item">
                             <a href="/logout" class="nav-link">Logout</a>
                         </li>
                     </ul>
                 </div>
 
                 <!-- Wishlist Blooms -->
-                <div class="col-sm-9" style="background-color: white;">
-                    <h2>My Wishlist</h2>
-                    {{#each user.blooms}}
-                        <div class="my-2 p-2 border bg-light rounded shadow">
-                            <h3>{{name}}</h3>
-                            <p>{{description}}</p>
-                            <button class="btn btn-danger remove-bloom" data-doc="{{this._id}}">Remove from Wishlist</button>
-                        </div>
-                    {{/each}}
-                </div>
+<div class="col-sm-9" style="background-color: white;">
+    <h2>My Wishlist</h2>
+    {{#each blooms}}
+        <div class="my-2 p-2 border bg-light rounded shadow">
+            <h3>{{this.plantName}}</h3>
+            <p>{{this.description}}</p>
+            <button class="btn btn-danger remove-bloom" data-doc="{{this._id}}">Remove from Wishlist</button>
+        </div>
+    {{/each}}
+</div>
             </div>
         </div>
     {{/if}}
