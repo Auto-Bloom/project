@@ -1,21 +1,30 @@
-<main class="container">
-    <section class="card shadow p-2 my-2 col-12 blooms-card">
-        <img src="{{bloom.image}}" class="card-img-top" alt="{{bloom.plantName}}">
-        <div class="card-body">
-            <h3 class="card-title">{{bloom.plantName}}</h3>
-            <p class="card-text">{{bloom.description}}</p>
-            <p>Regions: 
+<main class="container py-4">
+    <section class="my-2 p-2 border bg-light rounded shadow">
+        <img src="{{bloom.image}}" alt="{{bloom.plantName}}" style="width:100%; max-width: 300px; height: auto;">
+        <div>
+            <h3>{{bloom.plantName}}</h3>
+            <p>{{bloom.description}}</p>
+            <p><strong>Regions:</strong> 
                 {{#each bloom.region}}
-                    <span>{{this}}</span>{{#unless @last}}, {{/unless}}
+                    {{this}}{{#unless @last}}, {{/unless}}
                 {{/each}}
             </p>
-            <p>Benefits: 
+            <p><strong>Benefits:</strong> 
                 {{#each bloom.benefits}}
-                    <span>{{this}}</span>{{#unless @last}}, {{/unless}}
+                    {{this}}{{#unless @last}}, {{/unless}}
                 {{/each}}
             </p>
-            <p>Growing Conditions: {{bloom.growingConditions}}</p>
+            <p><strong>Growing Conditions:</strong> {{bloom.growingConditions}}</p>
+            <button class="btn btn-success" onclick="addToWishList('{{bloom._id}}')">Add to Wish List</button>
             <a href="/blooms" class="btn btn-secondary">All Blooms</a>
         </div>
     </section>
+    <script>
+        function addToWishList(bloomId) {
+            fetch(`/dashboard/addToWishList/${bloomId}`, { method: 'PUT'})
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
 </main>
