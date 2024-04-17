@@ -2,29 +2,40 @@
   <h1 class="my-2">Blooms</h1>
   {{#each blooms}}
     <div class="my-2 p-2 border bg-light rounded shadow">
+      <!-- Add to Wish List button at the top with padding -->
+      <div class="mb-2" style="padding-bottom: 10px;">
+        <button class="btn btn-success" style="margin-top: 10px;" onclick="addToWishList('{{this._id}}')">Add to Wish List</button>
+      </div>
+      
       <img src="{{this.image}}" alt="{{this.plantName}}" style="width:100%; max-width: 300px; height: auto;">
       <h3>{{this.plantName}}</h3>
       <p>{{this.description}}</p>
-      
+
       <!-- Displaying Regions -->
       <p><strong>Regions:</strong> 
         {{#each region}}
           {{this}}{{#unless @last}}, {{/unless}}
         {{/each}}
       </p>
-      
+
       <!-- Displaying Benefits -->
       <p><strong>Benefits:</strong> 
         {{#each benefits}}
           {{this}}{{#unless @last}}, {{/unless}}
         {{/each}}
       </p>
-      
+
+      <!-- Displaying Growing Conditions -->
       <p><strong>Growing Conditions:</strong> {{this.growingConditions}}</p>
-      <a class="btn btn-dark" href="/blooms/{{this._id}}">Learn More</a>
-      <!-- <a class="btn btn-warning update" href="/blooms/{{this._id}}?updating=true">Update Bloom</a> -->
-      <button class="btn btn-success" onclick="addToWishList('{{this._id}}')">Add to Wish List</button>
-      <!-- <a class="btn btn-danger delete" href="#" data-doc="{{this._id}}">Delete</a> --> 
+      
+      <!-- Displaying Price -->
+      <p><strong>Price per Seed Packet:</strong> {{this.pricePerSeedPacket}}</p>
+
+      <!-- Buttons -->
+      <div class="d-flex justify-content-between">
+        <a class="btn btn-dark" href="/blooms/{{this._id}}">Learn More</a>
+        <button class="btn btn-primary" onclick="addToCart('{{this._id}}')">Add to Cart</button>
+      </div>
     </div>
   {{/each}}
   <script>
@@ -46,6 +57,19 @@
       fetch(`/dashboard/addToWishList/${bloomId}`, { method: 'PUT'})
         .then(response => response.json())
         .then(data => alert(data.message))
+        .catch(error => console.error('Error:', error));
+    }
+
+    function addToCart(bloomId) {
+      fetch(`/cart/add/${bloomId}`, { method: 'POST'})
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Added to cart successfully!');
+          } else {
+            alert('Failed to add to cart.');
+          }
+        })
         .catch(error => console.error('Error:', error));
     }
   </script>
