@@ -1,0 +1,25 @@
+<!-- cart.hbs -->
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-sm-3 sidenav">
+            <!-- Sidebar content -->
+        </div>
+
+        <div class="col-sm-9 bg-white">
+            <h2>My Blooms:</h2>
+            {{#if cart}}
+                {{#each cart}}
+                    <div class="my-2 p-2 border bg-light rounded shadow">
+                        <img src="{{bloomId.image}}" alt="{{bloomId.plantName}}" style="width:100%; max-width: 300px; height: auto;">
+                        <h3>{{bloomId.plantName}}</h3>
+                        <p>{{bloomId.description}}</p>
+                        <!-- More details -->
+                        <button class="btn btn-danger remove-btn" data-doc="{{bloomId._id}}">Remove from Cart</button>
+                    </div>
+                {{/each}}
+            {{else}}
+                <p>{{message}}</p>
+            {{/if}}
+        </div>
+    </div>
+</div>

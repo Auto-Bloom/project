@@ -9,7 +9,6 @@ const bloomSchema = new Schema({
         type: String,
         required: true
     },
-    // Update region field to allow multiple selections
     region: [{
         type: String,
         required: true,
@@ -19,7 +18,6 @@ const bloomSchema = new Schema({
         type: String,
         required: true
     },
-    // Update benefits to allow multiple selections
     benefits: [{
         type: String,
         required: true,
@@ -29,18 +27,22 @@ const bloomSchema = new Schema({
         type: String,
         required: true,
         enum: ['full sun', 'partial sun', 'full shade']
+    },
+    pricePerSeedPacket: {
+        type: String,
+        required: true
     }
 });
 
+// Define the Bloom model
 const Bloom = model('Bloom', bloomSchema);
 
-
-// Adjusted functions for Bloom model
+// Functions using the Bloom model
 const createBloom = async (data) => {
     let success = false;
-    const { image, plantName, region, description, benefits, growingConditions } = data;
-    if (![image, plantName, region, description, benefits, growingConditions].every(prop => prop)) return success;
-    const bloom = new Bloom({ image, plantName, region, description, benefits, growingConditions });
+    const { image, plantName, region, description, benefits, growingConditions, pricePerSeedPacket } = data;
+    if (![image, plantName, region, description, benefits, growingConditions, pricePerSeedPacket].every(prop => prop)) return success;
+    const bloom = new Bloom({ image, plantName, region, description, benefits, growingConditions, pricePerSeedPacket });
     try {
         const res = await bloom.save();
         if (res) success = true;
@@ -53,22 +55,23 @@ const createBloom = async (data) => {
 const updateBloom = async (data) => {
     let success = false;
     try {
-        const { 
-            id = null, 
+        const {
+            id = null,
             image = null,
             plantName = null,
-            region = null, 
-            description = null, 
-            benefits = null, 
-            growingConditions = null 
+            region = null,
+            description = null,
+            benefits = null,
+            growingConditions = null,
+            pricePerSeedPacket = null
         } = data;
-        if ([id, image, plantName, region, description, benefits, growingConditions].includes(null)) {
+        if ([id, image, plantName, region, description, benefits, growingConditions, pricePerSeedPacket].includes(null)) {
             console.log('Missing data in updateBloom');
             return success;
         }
         const updateReq = await Bloom.findByIdAndUpdate(
             { _id: id },
-            { image, plantName, region, description, benefits, growingConditions },
+            { image, plantName, region, description, benefits, growingConditions, pricePerSeedPacket },
             { new: true }
         );
         if (updateReq) success = true;

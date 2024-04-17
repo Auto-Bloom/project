@@ -4,6 +4,8 @@ const handlebars = require('express-handlebars')
 const path = require('path')
 const { Bloom } = require('./models/blooms');
 const { User } = require('./models/users.js');
+const Cart = require('./models/cart');
+
 
 
 require('dotenv').config()
@@ -49,6 +51,7 @@ const dashboardRoutes = require('./routes/dashboard');
 app.use('/dashboard', dashboardRoutes);
 const contactRoutes = require('./routes/contact');
 app.use('/contact', contactRoutes);
+
 
 // For creating a new bloom
 app.get('/addBlooms', (req, res) => {
@@ -127,6 +130,114 @@ app.put('/dashboard/addToWishList/:bloomId', async (req, res) => {
     }
   } else {
     res.status(403).send({ message: 'Unauthorized' });
+  }
+});
+
+// POST endpoint for adding to the cart
+app.get('/cart', async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).redirect('/login');
+  }
+
+  try {
+    const userId = req.session.user._id;
+    const cart = await Cart.findOne({ userId }).populate('items.bloomId');
+
+    if (!cart || cart.items.length === 0) {
+      res.render('cart', { cart: null, message: 'Your cart is empty!' });
+    } else {
+      //Handlebars access issues
+      const items = cart.items.map(item => ({
+        ...item._doc,
+        bloomId: item.bloomId ? { ...item.bloomId._doc } : undefined
+      }));
+
+      res.render('cart', { cart: items, user: req.session.user });
+    }
+  } catch (error) {
+    console.error('Failed to retrieve cart:', error);
+    res.status(500).send('Error retrieving cart');
+  }
+});
+
+app.post('/cart/add/:bloomId', async (req, res) => {
+  if (!req.session.user) {
+    console.log('Unauthorized attempt to access cart');
+    return res.status(401).send({ message: 'Unauthorized' });
+  }
+
+  const { bloomId } = req.params;
+  const userId = req.session.user._id;
+  console.log(`Adding bloom ${bloomId} to user ${userId}'s cart`);
+
+  try {
+    let cart = await Cart.findOne({ userId });
+    if (!cart) {
+      console.log('No cart found, creating a new one');
+      cart = new Cart({ userId, items: [{ bloomId, quantity: 1 }] });
+    } else {
+      const itemIndex = cart.items.findIndex(item => item.bloomId.toString() === bloomId);
+      if (itemIndex > -1) {
+        cart.items[itemIndex].quantity += 1;
+        console.log('Item already in cart, increasing quantity');
+      } else {
+        cart.items.push({ bloomId, quantity: 1 });
+        console.log('Adding new item to cart');
+      }
+    }
+    await cart.save();
+    console.log('Cart updated successfully');
+    res.send({ success: true, message: 'Item added to cart' });
+  } catch (error) {
+    console.error('Error adding item to cart:', error);
+    res.status(500).send({ success: false, message: 'Failed to add item to cart', error: error.toString() });
+  }
+});
+
+app.get('/cart', async (req, res) => {
+  if (!req.session.user) {
+      return res.status(401).redirect('/login');
+  }
+
+  try {
+      const userId = req.session.user._id;
+      const cart = await Cart.findOne({ userId }).populate('items.bloomId');
+      if (!cart) {
+          res.render('cart', { cart: null, message: 'Your cart is empty!' });
+      } else {
+          res.render('cart', { cart: cart.items, user: req.session.user });
+      }
+  } catch (error) {
+      console.error('Failed to retrieve cart:', error);
+      res.status(500).send('Error retrieving cart');
+  }
+});
+
+// POST endpoint for removing from the cart
+app.post('/cart/remove/:bloomId', async (req, res) => {
+  if (!req.session.user) {
+      return res.status(401).send({ message: 'Unauthorized' });
+  }
+  try {
+      const userId = req.session.user._id;
+      const { bloomId } = req.params;
+      let cart = await Cart.findOne({ userId });
+
+      if (cart) {
+          const itemIndex = cart.items.findIndex(item => item.bloomId.toString() === bloomId);
+          if (itemIndex > -1) {
+              cart.items.splice(itemIndex, 1); // remove item from array
+              await cart.save();
+              res.send({ success: true, message: 'Item removed from cart' });
+          } else {
+              res.send({ success: false, message: 'Item not found in cart' });
+          }
+      } else {
+          res.send({ success: false, message: 'No cart found' });
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).send({ success: false, message: 'Failed to remove item from cart' });
   }
 });
 
