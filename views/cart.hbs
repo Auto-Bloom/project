@@ -1,25 +1,41 @@
 <!-- cart.hbs -->
-<div class="container-fluid">
-    <div class="row content">
-        <div class="col-sm-3 sidenav">
-            <!-- Sidebar content -->
-        </div>
+<main class="container py-4">
+    <h1 class="my-2">My Cart</h1>
+    {{#if cart}}
+        {{#each cart}}
+            <div class="my-2 p-2 border bg-light rounded shadow" id="item-{{bloomId._id}}">
+                <img src="{{bloomId.image}}" alt="{{bloomId.plantName}}" style="width:100%; max-width: 300px; height: auto;">
+                <h3>{{bloomId.plantName}}</h3>
+                <p>{{bloomId.description}}</p>
 
-        <div class="col-sm-9 bg-white">
-            <h2>My Blooms:</h2>
-            {{#if cart}}
-                {{#each cart}}
-                    <div class="my-2 p-2 border bg-light rounded shadow">
-                        <img src="{{bloomId.image}}" alt="{{bloomId.plantName}}" style="width:100%; max-width: 300px; height: auto;">
-                        <h3>{{bloomId.plantName}}</h3>
-                        <p>{{bloomId.description}}</p>
-                        <!-- More details -->
-                        <button class="btn btn-danger remove-btn" data-doc="{{bloomId._id}}">Remove from Cart</button>
-                    </div>
-                {{/each}}
-            {{else}}
-                <p>{{message}}</p>
-            {{/if}}
-        </div>
-    </div>
-</div>
+                <!-- Remove from Cart Button -->
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger" onclick="removeFromCart('{{bloomId._id}}')">Remove from Cart</button>
+                </div>
+            </div>
+        {{/each}}
+    {{else}}
+        <p>{{message}}</p>
+    {{/if}}
+</main>
+
+<script>
+    function removeFromCart(bloomId) {
+        fetch(`/cart/remove/${bloomId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Item removed from cart');
+                document.getElementById('item-' + bloomId).remove();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
