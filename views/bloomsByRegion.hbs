@@ -7,15 +7,29 @@
             <p>{{this.description}}</p>
             <button class="btn btn-success" onclick="addToWishList('{{this._id}}')">Add to Wish List</button>
             <a class="btn btn-dark" href="/blooms/{{this._id}}">Learn More</a>
+            <button class="btn btn-primary" onclick="addToCart('{{this._id}}')">Add to Cart</button>
         </div>
     {{else}}
         <p>No blooms found for this region.</p>
     {{/each}}
     <script>
         function addToWishList(bloomId) {
-            fetch(`/dashboard/addToWishList/${bloomId}`, { method: 'PUT'})
+            fetch(`/dashboard/addToWishList/${bloomId}`, { method: 'PUT' })
                 .then(response => response.json())
                 .then(data => alert(data.message))
+                .catch(error => console.error('Error:', error));
+        }
+
+        function addToCart(bloomId) {
+            fetch(`/cart/add/${bloomId}`, { method: 'POST' })  // Changed endpoint and method
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Added to cart successfully!');
+                    } else {
+                        alert('Failed to add to cart.');
+                    }
+                })
                 .catch(error => console.error('Error:', error));
         }
     </script>
