@@ -39,17 +39,14 @@ const Bloom = model('Bloom', bloomSchema);
 
 // Functions using the Bloom model
 const createBloom = async (data) => {
-    let success = false;
-    const { image, plantName, region, description, benefits, growingConditions, pricePerSeedPacket } = data;
-    if (![image, plantName, region, description, benefits, growingConditions, pricePerSeedPacket].every(prop => prop)) return success;
-    const bloom = new Bloom({ image, plantName, region, description, benefits, growingConditions, pricePerSeedPacket });
+    const bloom = new Bloom(data);
     try {
-        const res = await bloom.save();
-        if (res) success = true;
+        await bloom.save();
+        return true; // Return true if save was successful
     } catch (err) {
-        console.error(`ERROR SAVING BLOOM: ${err} ${JSON.stringify(data)}`);
+        console.error(`ERROR SAVING BLOOM: ${err}`);
+        throw err; // Throw the error to be caught in the calling function
     }
-    return success;
 };
 
 const updateBloom = async (data) => {
