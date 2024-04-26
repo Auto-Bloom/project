@@ -73,16 +73,25 @@ const bloomAction = async (bloomId, action) => {
 document.querySelectorAll('.delete-bloom').forEach(btn => {
     btn.addEventListener('click', async (e) => {
         e.preventDefault();
-        const success = await bloomAction(btn.dataset.doc, 'delete');
-        if(success) window.location.reload();
+        const bloomId = btn.dataset.doc;
+        const url = `/blooms/${bloomId}`;
+        const options = {
+            method: 'DELETE',
+            credentials: 'same-origin',
+            headers: {
+                'CSRF-Token': 'your-csrf-token' 
+            }
+        };
+        try {
+            const response = await fetch(url, options);
+            if (response.status == 200) {
+                window.location.reload(); // Reload the page 
+            } else {
+                console.error('Failed to delete the bloom');
+            }
+        } catch (err) {
+            console.error(err);
+        }
     })
-})
-
-document.querySelectorAll('.remove-bloom').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-        e.preventDefault();
-        const success = await bloomAction(btn.dataset.doc, 'remove');
-        if(success) window.location.reload();
-    })
-})
+});
 </script>
