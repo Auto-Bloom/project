@@ -5,6 +5,8 @@ const path = require('path')
 const { Bloom } = require('./models/blooms');
 const { User } = require('./models/users.js');
 const Cart = require('./models/cart');
+const Order = require('./models/order');
+const { createBloom } = require('./models/blooms');
 
 
 
@@ -52,6 +54,22 @@ app.use('/dashboard', dashboardRoutes);
 const contactRoutes = require('./routes/contact');
 app.use('/contact', contactRoutes);
 
+// Simulated login route
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  // Authenticate user
+  const user = await User.findOne({ username, password });
+  if (user) {
+      req.session.user = user;
+      // Initialize cart in session
+      let cart = await Cart.findOne({ userId: user._id });
+      req.session.cart = cart ? cart : { items: [], total: 0 };
+      res.redirect('/dashboard');
+  } else {
+      res.status(401).send('Authentication failed');
+  }
+});
+
 
 // For creating a new bloom
 app.get('/addBlooms', (req, res) => {
@@ -68,21 +86,27 @@ app.get('/logout', (req, res) => {
     res.redirect('/'); // Redirect
   });
 });
-app.post('/blooms', (req, res) => {
-  // Ensure that 'region' and 'benefits' are always arrays
-  req.body.region = Array.isArray(req.body.region) ? req.body.region : req.body.region ? [req.body.region] : [];
-  req.body.benefits = Array.isArray(req.body.benefits) ? req.body.benefits : req.body.benefits ? [req.body.benefits] : [];
-  
-  const bloom = new Bloom(req.body);
-  bloom.save()
-      .then((result) => {
-          res.redirect('/blooms'); // Redirect to the blooms listing page
-      })
-      .catch((err) => {
-          console.log(err);
-          // Handle the error, potentially sending the user back to the form with an error message
-      });
+
+app.post('/blooms', async (req, res) => {
+  // Convert 'region' and 'benefits' to arrays if they are not already
+  req.body.region = [].concat(req.body.region || []);
+  req.body.benefits = [].concat(req.body.benefits || []);
+
+  try {
+      const success = await createBloom(req.body);
+      if (success) {
+          res.redirect('/blooms'); // Redirect to the blooms listing page on success
+      } else {
+          // If createBloom returned false, it means creation was unsuccessful
+          res.status(400).send('Failed to create bloom. Please check the input.');
+      }
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('An error occurred on the server.');
+  }
 });
+
+
 
 
 // For deleting a bloom
@@ -240,6 +264,58 @@ app.post('/cart/remove/:bloomId', async (req, res) => {
       res.status(500).send({ success: false, message: 'Failed to remove item from cart' });
   }
 });
+
+app.post('/order/submit', async (req, res) => {
+
+  const { fullName, email, address, cardNumber, expDate, cvv } = req.body;
+
+  // Simulate payment processing
+  const paymentResult = { success: true, transactionId: '1234567890' };
+
+  if (paymentResult.success) {
+      // Create a new order in the database
+      const order = new Order({
+          userId: req.session.user._id,
+          items: req.session.cart.items,  // Assuming cart items are stored in session
+          total: req.session.cart.total,  // Calculate total or retrieve from session
+          address: address,
+          paymentStatus: 'Completed'
+      });
+
+      try {
+          await order.save();
+          res.json({ success: true, message: 'Order placed successfully', orderId: order._id });
+      } catch (error) {
+          console.error('Order saving error:', error);
+          res.status(500).json({ success: false, message: 'Failed to place order' });
+      }
+  } else {
+      res.status(400).json({ success: false, message: 'Payment failed' });
+  }
+});
+// Route for the checkout page
+app.get('/checkout', (req, res) => {
+  if (!req.session.user) {
+      console.log('Redirect to Login: No user session found.');
+      return res.redirect('/login');
+  }
+
+  if (!req.session.cart || req.session.cart.items.length === 0) {
+      console.log('Redirect to Cart: Cart is empty or not found.');
+      return res.redirect('/cart');
+  }
+
+  try {
+      res.render('checkout', {
+          user: req.session.user,
+          cart: req.session.cart
+      });
+  } catch (error) {
+      console.error('Error rendering checkout:', error);
+      res.status(500).send('Error processing your request');
+  }
+});
+
 
 
 //Start Server
