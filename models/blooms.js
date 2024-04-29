@@ -30,7 +30,19 @@ const bloomSchema = new Schema({
     },
     pricePerSeedPacket: {
         type: String,
-        required: true
+        required: false // not required anymore
+    },
+    pricePerBareRootPlant: {
+        type: String,
+        required: false // not required anymore
+    }
+});
+
+bloomSchema.pre('save', function (next) {
+    if (!this.pricePerSeedPacket && !this.pricePerBareRootPlant) {
+        next(new Error('Either pricePerSeedPacket or pricePerBareRootPlant must be provided.'));
+    } else {
+        next();
     }
 });
 
@@ -60,10 +72,11 @@ const updateBloom = async (data) => {
             description = null,
             benefits = null,
             growingConditions = null,
-            pricePerSeedPacket = null
+            pricePerSeedPacket, 
+            pricePerBareRootPlant
         } = data;
-        if ([id, image, plantName, region, description, benefits, growingConditions, pricePerSeedPacket].includes(null)) {
-            console.log('Missing data in updateBloom');
+        if (!id || ![pricePerSeedPacket, pricePerBareRootPlant].some(price => price)) {
+            console.log('Missing required data in updateBloom');
             return success;
         }
         const updateReq = await Bloom.findByIdAndUpdate(

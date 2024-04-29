@@ -1,31 +1,38 @@
-const express = require('express')
+const express = require('express');
 const session = require('express-session');
-const handlebars = require('express-handlebars')
-const path = require('path')
+const handlebars = require('express-handlebars');
+const path = require('path');
 const { Bloom } = require('./models/blooms');
-const { User } = require('./models/users.js');
+const { User } = require('./models/users');
 const Cart = require('./models/cart');
 const Order = require('./models/order');
 const { createBloom } = require('./models/blooms');
 
+require('dotenv').config();
 
+const app = express();
 
-require('dotenv').config()
-
-const app = express()
-
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//Handlebars - html templating setup
-app.set('view engine', 'hbs')
+// Handlebars - HTML templating setup
+app.set('view engine', 'hbs');
 app.engine('hbs', handlebars.engine({
-    layoutsDir: __dirname + '/views/layouts',
-    extname: 'hbs',
-    defaultLayout: 'main',
-    partialsDir: __dirname + '/views/partials'
-}))
+  layoutsDir: __dirname + '/views/layouts',
+  extname: 'hbs',
+  defaultLayout: 'main',
+  partialsDir: __dirname + '/views/partials',
+  helpers: {
+      contains: function(array, value) {
+          return array.includes(value);
+      },
+      ifEquals: (arg1, arg2) => arg1 === arg2,  
+      equals: (arg1, arg2) => arg1 === arg2   
+  }
+}));
+
+
 
 const hbs = handlebars.create({})
 hbs.handlebars.registerHelper('ifEquals', (arg, argTwo) => arg == argTwo)
