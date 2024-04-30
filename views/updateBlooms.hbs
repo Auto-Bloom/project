@@ -18,37 +18,39 @@
                 <textarea name="description" id="description" class="form-control" placeholder="Enter Description">{{ bloom.description }}</textarea>
             </div>
             <fieldset class="mb-3">
-                <legend>Regions:</legend>
-                <!-- Checkboxes for regions -->
-                <div class="form-check">
-                    <input type="checkbox" id="northeast" name="region[]" value="Northeast" class="form-check-input">
-                    <label for="northeast" class="form-check-label">Northeast</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" id="midwest" name="region[]" value="Midwest" class="form-check-input">
-                    <label for="midwest" class="form-check-label">Midwest</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" id="south" name="region[]" value="South" class="form-check-input">
-                    <label for="south" class="form-check-label">South</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" id="west" name="region[]" value="West" class="form-check-input">
-                    <label for="west" class="form-check-label">West</label>
-                </div>
-            </fieldset>
-            <fieldset class="mb-3">
-                <legend>Benefits:</legend>
-                <!-- Checkboxes for benefits -->
-                <div class="form-check">
-                    <input type="checkbox" id="attractsPollinators" name="benefits[]" value="attracts pollinators" class="form-check-input">
-                    <label for="attractsPollinators" class="form-check-label">Attracts Pollinators</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" id="deerResistant" name="benefits[]" value="deer resistant" class="form-check-input">
-                    <label for="deerResistant" class="form-check-label">Deer Resistant</label>
-                </div>
-            </fieldset>
+    <legend>Regions:</legend>
+    <!-- Checkboxes for regions, dynamically checked -->
+    <div class="form-check">
+        <input type="checkbox" id="northeast" name="region[]" value="Northeast" class="form-check-input" {{#if (contains bloom.region 'Northeast')}}checked{{/if}}>
+        <label for="northeast" class="form-check-label">Northeast</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" id="midwest" name="region[]" value="Midwest" class="form-check-input" {{#if (contains bloom.region 'Midwest')}}checked{{/if}}>
+        <label for="midwest" class="form-check-label">Midwest</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" id="south" name="region[]" value="South" class="form-check-input" {{#if (contains bloom.region 'South')}}checked{{/if}}>
+        <label for="south" class="form-check-label">South</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" id="west" name="region[]" value="West" class="form-check-input" {{#if (contains bloom.region 'West')}}checked{{/if}}>
+        <label for="west" class="form-check-label">West</label>
+    </div>
+</fieldset>
+
+<fieldset class="mb-3">
+    <legend>Benefits:</legend>
+    <!-- Checkboxes for benefits, dynamically checked -->
+    <div class="form-check">
+        <input type="checkbox" id="attractsPollinators" name="benefits[]" value="attracts pollinators" class="form-check-input" {{#if (contains bloom.benefits 'attracts pollinators')}}checked{{/if}}>
+        <label for="attractsPollinators" class="form-check-label">Attracts Pollinators</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" id="deerResistant" name="benefits[]" value="deer resistant" class="form-check-input" {{#if (contains bloom.benefits 'deer resistant')}}checked{{/if}}>
+        <label for="deerResistant" class="form-check-label">Deer Resistant</label>
+    </div>
+</fieldset>
+
             <div class="form-group my-2">
                 <label for="growingConditions">Growing Conditions</label>
                 <select id="growingConditions" class="form-control">
