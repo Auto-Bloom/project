@@ -3,14 +3,14 @@
         <!-- Admin Dashboard -->
         <h1>Admin Dashboard</h1>
         <p>Username: {{ user.username }}</p>
-        <p>Email: {{ user.email }} </p>
+        <p>Email: {{ user.email }}</p>
         <p>Name: {{ user.firstName }} {{ user.lastName }}</p>
         <p>Role: {{ user.role }}</p>
-                            <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a href="/logout" class="nav-link">Logout</a>
-                        </li>
-                    </ul>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a href="/logout" class="nav-link">Logout</a>
+            </li>
+        </ul>
         <a class="btn btn-primary my-2" href="/addBlooms">Add New Bloom</a>
         
         {{#each blooms}}
@@ -18,16 +18,36 @@
                 <img src="{{this.image}}" alt="{{this.plantName}}" style="width:100%; max-width: 300px; height: auto;">
                 <h3>{{this.plantName}}</h3>
                 <p>{{this.description}}</p>
+                <p><strong>Regions:</strong>
+                    {{#each this.region}}
+                        {{this}}{{#unless @last}}, {{/unless}}
+                    {{/each}}
+                </p>
+                <p><strong>Benefits:</strong>
+                    {{#each this.benefits}}
+                        {{this}}{{#unless @last}}, {{/unless}}
+                    {{/each}}
+                </p>
+                <p><strong>Growing Conditions:</strong> {{this.growingConditions}}</p>
+                <p><strong>Price:</strong>
+                    {{#if this.pricePerSeedPacket}}
+                        ${{this.pricePerSeedPacket}} per Seed Packet
+                    {{/if}}
+                    {{#if this.pricePerBareRootPlant}}
+                        {{#if this.pricePerSeedPacket}} and {{/if}}${{this.pricePerBareRootPlant}} per Bare Root Plant
+                    {{/if}}
+                    {{#unless this.pricePerSeedPacket}}{{#unless this.pricePerBareRootPlant}} Price not available {{/unless}}{{/unless}}
+                </p>
                 <a class="btn btn-warning" href="/blooms/update/{{this._id}}">Update</a>
                 <button class="btn btn-danger delete-bloom" data-doc="{{this._id}}">Delete</button>
             </div>
         {{/each}}
+
     {{else}}
         <!-- User Dashboard -->
         <div class="container-fluid">
             <div class="row content">
-                <!-- Sidebar -->
-                <div class="col-sm-3 sidenav" style="height: 900px;">
+                <div class="col-sm-3 sidenav">
                     <h2>User Dashboard</h2>
                     <p>Username: {{ user.username }}</p>
                     <p>Email: {{ user.email }}</p>
@@ -39,22 +59,21 @@
                         </li>
                     </ul>
                 </div>
-
-                <!-- Wishlist Blooms -->
-<div class="col-sm-9" style="background-color: white;">
-    <h2>My Wishlist</h2>
-    {{#each blooms}}
-        <div class="my-2 p-2 border bg-light rounded shadow">
-            <h3>{{this.plantName}}</h3>
-            <p>{{this.description}}</p>
-            <button class="btn btn-danger remove-bloom" data-doc="{{this._id}}">Remove from Wishlist</button>
-        </div>
-    {{/each}}
-</div>
+                <div class="col-sm-9" style="background-color: white;">
+                    <h2>My Wishlist</h2>
+                    {{#each blooms}}
+                        <div class="my-2 p-2 border bg-light rounded shadow">
+                            <h3>{{this.plantName}}</h3>
+                            <p>{{this.description}}</p>
+                            <button class="btn btn-danger remove-bloom" data-doc="{{this._id}}">Remove from Wishlist</button>
+                        </div>
+                    {{/each}}
+                </div>
             </div>
         </div>
     {{/if}}
 </div>
+
 
 <script>
 const bloomAction = async (bloomId, action) => {
@@ -73,16 +92,25 @@ const bloomAction = async (bloomId, action) => {
 document.querySelectorAll('.delete-bloom').forEach(btn => {
     btn.addEventListener('click', async (e) => {
         e.preventDefault();
-        const success = await bloomAction(btn.dataset.doc, 'delete');
-        if(success) window.location.reload();
+        const bloomId = btn.dataset.doc;
+        const url = `/blooms/${bloomId}`;
+        const options = {
+            method: 'DELETE',
+            credentials: 'same-origin',
+            headers: {
+                'CSRF-Token': 'your-csrf-token' 
+            }
+        };
+        try {
+            const response = await fetch(url, options);
+            if (response.status == 200) {
+                window.location.reload(); // Reload the page 
+            } else {
+                console.error('Failed to delete the bloom');
+            }
+        } catch (err) {
+            console.error(err);
+        }
     })
-})
-
-document.querySelectorAll('.remove-bloom').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-        e.preventDefault();
-        const success = await bloomAction(btn.dataset.doc, 'remove');
-        if(success) window.location.reload();
-    })
-})
+});
 </script>

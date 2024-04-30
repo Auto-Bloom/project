@@ -17,25 +17,40 @@
                 <label for="description">Description</label>
                 <textarea name="description" id="description" class="form-control" placeholder="Enter Description">{{ bloom.description }}</textarea>
             </div>
-            <!-- dynamic rendering for region and benefits selection -->
-            <div class="form-group my-2">
-                <label for="region">Region</label>
-                <!-- need to implement multi-select UI -->
-                <select multiple name="region" id="region" class="form-control">
-                    <option value="Northeast">Northeast</option>
-                    <option value="Midwest">Midwest</option>
-                    <option value="South">South</option>
-                    <option value="West">West</option>
-                </select>
-            </div>
-            <div class="form-group my-2">
-                <label for="benefits">Benefits</label>
-                <!-- need to implement multi-select UI -->
-                <select multiple name="benefits" id="benefits" class="form-control">
-                    <option value="attracts pollinators">Attracts Pollinators</option>
-                    <option value="deer resistant">Deer Resistant</option>
-                </select>
-            </div>
+            <fieldset class="mb-3">
+    <legend>Regions:</legend>
+    <!-- Checkboxes for regions, dynamically checked -->
+    <div class="form-check">
+        <input type="checkbox" id="northeast" name="region[]" value="Northeast" class="form-check-input" {{#if (contains bloom.region 'Northeast')}}checked{{/if}}>
+        <label for="northeast" class="form-check-label">Northeast</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" id="midwest" name="region[]" value="Midwest" class="form-check-input" {{#if (contains bloom.region 'Midwest')}}checked{{/if}}>
+        <label for="midwest" class="form-check-label">Midwest</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" id="south" name="region[]" value="South" class="form-check-input" {{#if (contains bloom.region 'South')}}checked{{/if}}>
+        <label for="south" class="form-check-label">South</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" id="west" name="region[]" value="West" class="form-check-input" {{#if (contains bloom.region 'West')}}checked{{/if}}>
+        <label for="west" class="form-check-label">West</label>
+    </div>
+</fieldset>
+
+<fieldset class="mb-3">
+    <legend>Benefits:</legend>
+    <!-- Checkboxes for benefits, dynamically checked -->
+    <div class="form-check">
+        <input type="checkbox" id="attractsPollinators" name="benefits[]" value="attracts pollinators" class="form-check-input" {{#if (contains bloom.benefits 'attracts pollinators')}}checked{{/if}}>
+        <label for="attractsPollinators" class="form-check-label">Attracts Pollinators</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" id="deerResistant" name="benefits[]" value="deer resistant" class="form-check-input" {{#if (contains bloom.benefits 'deer resistant')}}checked{{/if}}>
+        <label for="deerResistant" class="form-check-label">Deer Resistant</label>
+    </div>
+</fieldset>
+
             <div class="form-group my-2">
                 <label for="growingConditions">Growing Conditions</label>
                 <select id="growingConditions" class="form-control">
@@ -44,35 +59,60 @@
                     <option value="full shade">Full Shade</option>
                 </select>
             </div>
-            <input type="submit" value="Submit" class="btn btn-dark">
+                <label for="pricePerSeedPacket">Price Per Seed Packet:</label>
+    <input type="text" name="pricePerSeedPacket" id="pricePerSeedPacket" class="form-control" value="{{bloom.pricePerSeedPacket}}" placeholder="Enter price per seed packet">
+<div class="form-group my-2">
+    <label for="pricePerBareRootPlant">Price Per Bare Root Plant:</label>
+    <input type="text" name="pricePerBareRootPlant" id="pricePerBareRootPlant" class="form-control" value="{{bloom.pricePerBareRootPlant}}" placeholder="Enter price per bare root plant">
+</div>
+            <div class="form-group my-2 d-flex justify-content-between">
+                <input type="submit" value="Submit" class="btn btn-dark">
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='/dashboard';">Cancel</button>
+            </div>
+            <div class="form-group my-2">
         </form>
     </section>
 </div>
 
 <script>
-    document.getElementById('update-form').addEventListener('submit', async e => {
-        e.preventDefault();
-        console.log('Submitting form');
-        let success = false;
-        try {
-            const formData = new URLSearchParams();
-            formData.append('id', document.getElementById('bloom-id').value);
-            formData.append('image', document.getElementById('image').value);
-            formData.append('plantName', document.getElementById('plantName').value);
-            formData.append('description', document.getElementById('description').value);
-            // additional logic is needed to handle multiple selections
-            formData.append('region', document.getElementById('region').value);
-            formData.append('benefits', document.getElementById('benefits').value);
-            formData.append('growingConditions', document.getElementById('growingConditions').value);
+document.getElementById('update-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    console.log('Submitting form');
+    let success = false;
+    try {
+const formData = new URLSearchParams();
+formData.append('id', document.getElementById('bloom-id').value);
+formData.append('image', document.getElementById('image').value);
+formData.append('plantName', document.getElementById('plantName').value);
+formData.append('description', document.getElementById('description').value);
+formData.append('pricePerSeedPacket', document.getElementById('pricePerSeedPacket').value);
+formData.append('pricePerBareRootPlant', document.getElementById('pricePerBareRootPlant').value);
 
-            const { status } = await fetch('/blooms', { 
-                method: 'PUT', 
-                body: formData
-            });
-            success = status === 200;
-        } catch(err) {
-            console.error(`ERROR SUBMITTING UPDATE FORM: ${err}`);
+
+
+        const regions = Array.from(document.querySelectorAll('input[name="region[]"]:checked')).map(el => el.value);
+        formData.append('region', regions.join(','));
+
+        const benefits = Array.from(document.querySelectorAll('input[name="benefits[]"]:checked')).map(el => el.value);
+        formData.append('benefits', benefits.join(','));
+
+        formData.append('growingConditions', document.getElementById('growingConditions').value);
+
+        const response = await fetch('/blooms', { 
+            method: 'PUT', 
+            body: formData
+        });
+        if (response.ok) {
+            console.log('Update successful');
+            success = true;
+            window.location.href = '/dashboard'; // Redirect
+        } else {
+            console.error('Failed to update bloom');
         }
-        return success;
-    });
+    } catch(err) {
+        console.error(`ERROR SUBMITTING UPDATE FORM: ${err}`);
+    }
+    return success;
+});
+
 </script>

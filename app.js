@@ -1,58 +1,60 @@
-const express = require('express')
+const express = require('express');
 const session = require('express-session');
-const handlebars = require('express-handlebars')
-const path = require('path')
+const path = require('path');
 const { Bloom } = require('./models/blooms');
-const { User } = require('./models/users.js');
+const { User } = require('./models/users');
 const Cart = require('./models/cart');
 const Order = require('./models/order');
 const { createBloom } = require('./models/blooms');
+const handlebars = require('express-handlebars');
 
+require('dotenv').config();
 
+const app = express();
 
-require('dotenv').config()
-
-const app = express()
-
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//Handlebars - html templating setup
-app.set('view engine', 'hbs')
-app.engine('hbs', handlebars.engine({
-    layoutsDir: __dirname + '/views/layouts',
-    extname: 'hbs',
+// Define helpers within the existing Handlebars setup
+const hbs = handlebars.create({
     defaultLayout: 'main',
-    partialsDir: __dirname + '/views/partials'
-}))
+    extname: 'hbs',
+    helpers: {
+        contains: function (array, value) {
+            return array.includes(value);
+        },
+        eq: function (v1, v2) {
+            return v1 === v2; 
+        },
+        joinValues: function (values, separator = ', ') {
+            return values.join(separator);
+        }
+    }
+});
 
-const hbs = handlebars.create({})
-hbs.handlebars.registerHelper('ifEquals', (arg, argTwo) => arg == argTwo)
-hbs.handlebars.registerPartial('nav', '{{{nav}}}')
-hbs.handlebars.registerPartial('footer', '{{{footer}}}')
-hbs.handlebars.registerPartial('blooms', '{{{bloom}}}')
+// Set up Handlebars engine with custom helpers
+app.engine('hbs', hbs.engine);
+app.set('view engine', 'hbs');
 
 //DB Connection
 require('./db/db')
 
 app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-      maxAge: 1000 * 60 * 60 * 24 // 24 hours
-  }
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 // 24 hours
+    }
 }));
-
-app.use(express.json())
 
 //Routes
 app.use('/', require('./routes'))
 const dashboardRoutes = require('./routes/dashboard');
 app.use('/dashboard', dashboardRoutes);
 const contactRoutes = require('./routes/contact');
-app.use('/contact', contactRoutes);
+app.use('/contact', contactRoutes)
 
 // Simulated login route
 app.post('/login', async (req, res) => {
@@ -87,24 +89,34 @@ app.get('/logout', (req, res) => {
   });
 });
 
-app.post('/blooms', async (req, res) => {
-  // Convert 'region' and 'benefits' to arrays if they are not already
-  req.body.region = [].concat(req.body.region || []);
-  req.body.benefits = [].concat(req.body.benefits || []);
+//update
+
+app.put('/blooms', async (req, res) => {
+  console.log(req.body); 
+
+  const { id, image, plantName, description, region, benefits, growingConditions, pricePerSeedPacket, pricePerBareRootPlant } = req.body;
+
+  if (!id) {
+      return res.status(400).send('Bloom ID is required');
+  }
 
   try {
-      const success = await createBloom(req.body);
-      if (success) {
-          res.redirect('/blooms'); // Redirect to the blooms listing page on success
+      const updatedBloom = await Bloom.findByIdAndUpdate(id, {
+          image, plantName, description, region: region.split(','), benefits: benefits.split(','), growingConditions, pricePerSeedPacket, pricePerBareRootPlant
+      }, { new: true });
+
+      if (updatedBloom) {
+          console.log('Updated Bloom:', updatedBloom);
+          res.status(200).send('Bloom updated');
       } else {
-          // If createBloom returned false, it means creation was unsuccessful
-          res.status(400).send('Failed to create bloom. Please check the input.');
+          res.status(404).send('Bloom not found');
       }
   } catch (err) {
-      console.error(err);
-      res.status(500).send('An error occurred on the server.');
+      console.error(`ERROR UPDATING BLOOM: ${err}`);
+      res.status(500).send('Error updating bloom');
   }
 });
+
 
 
 
@@ -121,6 +133,30 @@ app.delete('/blooms/:id', (req, res) => {
       console.log(err);
     });
 });
+// updating bloom
+app.put('/blooms', async (req, res) => {
+    const { id, image, plantName, description, region, benefits, growingConditions } = req.body;
+
+    if (!id) {
+        return res.status(400).send('Bloom ID is required');
+    }
+
+    try {
+        const updatedBloom = await Bloom.findByIdAndUpdate(id, {
+            image, plantName, description, region: region.split(','), benefits: benefits.split(','), growingConditions
+        }, { new: true });
+
+        if (updatedBloom) {
+            res.status(200).send('Bloom updated');
+        } else {
+            res.status(404).send('Bloom not found');
+        }
+    } catch (err) {
+        console.error(`ERROR UPDATING BLOOM: ${err}`);
+        res.status(500).send('Error updating bloom');
+    }
+});
+
 
 // Route to display blooms by region
 app.get('/region/:regionName', async (req, res) => {
