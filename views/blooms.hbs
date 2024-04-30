@@ -10,26 +10,25 @@
       <h3>{{this.plantName}}</h3>
       <p>{{this.description}}</p>
       <p><strong>Regions:</strong> 
-        {{#each region}}
+        {{#each this.region}}
           {{this}}{{#unless @last}}, {{/unless}}
         {{/each}}
       </p>
       <p><strong>Benefits:</strong> 
-        {{#each benefits}}
+        {{#each this.benefits}}
           {{this}}{{#unless @last}}, {{/unless}}
         {{/each}}
       </p>
       <p><strong>Growing Conditions:</strong> {{this.growingConditions}}</p>
 
-      <!-- Displaying Price with conditional rendering -->
       <p><strong>Price:</strong>
         {{#if this.pricePerSeedPacket}}
-          {{this.pricePerSeedPacket}} per Seed Packet
-        {{else if this.pricePerBareRootPlant}}
-          {{this.pricePerBareRootPlant}} per Bare Root Plant
-        {{else}}
-          Price not available
+          ${{this.pricePerSeedPacket}} per Seed Packet
         {{/if}}
+        {{#if this.pricePerBareRootPlant}}
+          {{#if this.pricePerSeedPacket}} and {{/if}}${{this.pricePerBareRootPlant}} per Bare Root Plant
+        {{/if}}
+        {{#unless this.pricePerSeedPacket}}{{#unless this.pricePerBareRootPlant}} Price not available {{/unless}}{{/unless}}
       </p>
 
       <div class="d-flex justify-content-between">
@@ -38,6 +37,4 @@
       </div>
     </div>
   {{/each}}
-  <script>
-  </script>
 </main>

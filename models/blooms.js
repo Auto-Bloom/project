@@ -61,35 +61,32 @@ const createBloom = async (data) => {
     }
 };
 
-const updateBloom = async (data) => {
-    let success = false;
-    try {
-        const {
-            id = null,
-            image = null,
-            plantName = null,
-            region = null,
-            description = null,
-            benefits = null,
-            growingConditions = null,
-            pricePerSeedPacket, 
-            pricePerBareRootPlant
-        } = data;
-        if (!id || ![pricePerSeedPacket, pricePerBareRootPlant].some(price => price)) {
-            console.log('Missing required data in updateBloom');
-            return success;
-        }
-        const updateReq = await Bloom.findByIdAndUpdate(
-            { _id: id },
-            { image, plantName, region, description, benefits, growingConditions, pricePerSeedPacket },
-            { new: true }
-        );
-        if (updateReq) success = true;
-    } catch (err) {
-        console.error(`Error updating bloom: ${err}`);
+const updateBloom = async (req, res) => {
+    const { id, image, plantName, description, region, benefits, growingConditions, pricePerSeedPacket, pricePerBareRootPlant } = req.body;
+
+    console.log('Received prices:', pricePerSeedPacket, pricePerBareRootPlant); // Debugging log
+
+    if (!id) {
+        return res.status(400).send('Bloom ID is required');
     }
-    return success;
+
+    try {
+        const updatedBloom = await Bloom.findByIdAndUpdate(id, {
+            image, plantName, description, region: region.split(','), benefits: benefits.split(','), growingConditions, pricePerSeedPacket, pricePerBareRootPlant
+        }, { new: true });
+
+        if (updatedBloom) {
+            res.status(200).send('Bloom updated');
+        } else {
+            res.status(404).send('Bloom not found');
+        }
+    } catch (err) {
+        console.error(`ERROR UPDATING BLOOM: ${err}`);
+        res.status(500).send('Error updating bloom');
+    }
 };
+
+
 
 const deleteBloom = async (bloomId) => {
     let success = false;
