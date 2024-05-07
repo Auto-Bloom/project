@@ -21,7 +21,7 @@
         }
 
         function addToCart(bloomId) {
-            fetch(`/cart/add/${bloomId}`, { method: 'POST' })  // Changed endpoint and method
+            fetch(`/cart/add/${bloomId}`, { method: 'POST' })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {

@@ -30,7 +30,7 @@ const bloomSchema = new Schema({
     },
     pricePerSeedPacket: {
         type: String,
-        required: false // not required anymore
+        required: false 
     },
     pricePerBareRootPlant: {
         type: String,
