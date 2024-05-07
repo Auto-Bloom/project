@@ -12,11 +12,10 @@ require('dotenv').config();
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public'))); //static middleware
+app.use(express.urlencoded({ extended: true })); //URL encoded middleware
+app.use(express.json()); //JSON middleware
 
-// Define helpers within the existing Handlebars setup
 const hbs = handlebars.create({
     defaultLayout: 'main',
     extname: 'hbs',
@@ -33,19 +32,18 @@ const hbs = handlebars.create({
     }
 });
 
-// Set up Handlebars engine with custom helpers
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
 //DB Connection
 require('./db/db')
-
+//session middleware
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 // 24 hours
+        maxAge: 1000 * 60 * 60 * 24 
     }
 }));
 
@@ -56,7 +54,6 @@ app.use('/dashboard', dashboardRoutes);
 const contactRoutes = require('./routes/contact');
 app.use('/contact', contactRoutes)
 
-// Simulated login route
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   // Authenticate user
