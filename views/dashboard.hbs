@@ -113,4 +113,32 @@ document.querySelectorAll('.delete-bloom').forEach(btn => {
         }
     })
 });
+document.querySelectorAll('.remove-bloom').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const bloomId = btn.dataset.doc;
+        const url = `/blooms/remove/${bloomId}`; // Ensure this URL matches your server-side routing
+        const options = {
+            method: 'POST', // Change to POST if you're updating data
+            credentials: 'same-origin',
+            headers: {
+                'CSRF-Token': 'your-csrf-token' // Ensure you are handling CSRF tokens correctly
+            }
+        };
+        try {
+            const response = await fetch(url, options);
+            if (response.status === 200) {
+                alert('Bloom removed from wishlist.'); // Confirmation message
+                window.location.reload(); // Reload the page to reflect changes
+            } else {
+                console.error('Failed to remove the bloom from wishlist');
+                alert('Failed to remove bloom from wishlist. Please try again.'); // Error message
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error connecting to the server.');
+        }
+    });
+});
+
 </script>
