@@ -38,3 +38,13 @@
     </div>
   {{/each}}
 </main>
+<script>
+        function addToWishList(bloomId) {
+            fetch(`/dashboard/addToWishList/${bloomId}`, { method: 'PUT' })
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error('Error:', error));
+        }
+
+</script>
+
