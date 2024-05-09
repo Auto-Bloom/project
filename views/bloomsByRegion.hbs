@@ -5,6 +5,16 @@
             <img src="{{this.image}}" alt="{{this.plantName}}" style="width:100%; max-width: 300px; height: auto;">
             <h3>{{this.plantName}}</h3>
             <p>{{this.description}}</p>
+            <p><strong>Price:</strong>
+              {{#if this.pricePerSeedPacket}}
+                ${{this.pricePerSeedPacket}} per Seed Packet
+              {{/if}}
+              {{#if this.pricePerBareRootPlant}}
+                {{#if this.pricePerSeedPacket}} and {{/if}}${{this.pricePerBareRootPlant}} per Bare Root Plant
+              {{/if}}
+              {{#unless this.pricePerSeedPacket}}{{#unless this.pricePerBareRootPlant}} Price not available {{/unless}}{{/unless}}
+            </p>
+
             <button class="btn btn-success" onclick="addToWishList('{{this._id}}')">Add to Wish List</button>
             <a class="btn btn-dark" href="/blooms/{{this._id}}">Learn More</a>
             <button class="btn btn-primary" onclick="addToCart('{{this._id}}')">Add to Cart</button>
