@@ -14,6 +14,8 @@
 </head>
 <body>
 <main class="container-fluid p-0">
+<img id="loadingGif" src="/assets/coolest_loading_animation_1.gif" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);" width="300" height="300">
+
     <section class="home-hero py-4">
         <div class="container">
             <section class="col-md-12 col-12 text-md-left text-center">
@@ -38,10 +40,10 @@ function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
     var colors = {
-        'Northeast': '#ff4da6', // pink
-        'Midwest': '#4682B4', // blue
-        'South': '#32CD32', // green
-        'West': '#FFD700', // gold
+        'Northeast': '#ff4da6',
+        'Midwest': '#4682B4',
+        'South': '#32CD32',
+        'West': '#FFD700',
         'Alaska': '#FFD700'
     };
 
@@ -62,7 +64,12 @@ function initMap() {
             });
 
             polygon.addListener('click', function() {
-                window.location.href = `/region/${regionKey}`;
+                var gif = document.getElementById('loadingGif');
+                gif.style.display = 'block'; 
+                setTimeout(function() {
+                    window.location.href = `/region/${regionKey}`; 
+                    gif.style.display = 'none';
+                }, 3000);
             });
 
             polygon.addListener('mouseover', function() {
@@ -75,6 +82,7 @@ function initMap() {
         });
     });
 }
+
 
 </script>
 </body>
